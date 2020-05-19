@@ -213,7 +213,7 @@ Booking model
 | DELETE      | `/myhueco/delete/:id`   | {id}             | 201            | 400          | delete hueco                                                 |
 | POST        | `/contact-info`         |                  | 201            | 400          | Create and save a new user                                   |
 | POST        | `/payment-information`  |                  | 201            | 400          | Create new payment information                               |
-| GET         | `/Qrcode`               | {}               | 201            | 400          | show games                                                   |
+| GET         | `/Qrcode`               | {}               | 201            | 400          | show QR to download                                          |
 
 
 
@@ -237,4 +237,4 @@ The url to your repository and to your deployed project
 
 The url to your presentation slides
 
-[Slides Link](
+[Slides Link]
