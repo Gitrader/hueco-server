@@ -4,11 +4,15 @@ const Schema = mongoose.Schema;
 
 const bookingSchema = new Schema({
     business_id: [{type: Schema.Types.ObjectId,ref:'Business'}],
-    first_name: {type: String, required: true},
-    last_name: {type: String, required:true},
+    first_name: {type: String},
+    last_name: {type: String},
     date :{type:Date, default: new (Date)},
-    email: {type: String, required:true},
-    timeslot:[]
+    email: {type: String},
+    timeslot:{type:String},
+    cardholder_name:{type:String},
+    card_number:{type:String},
+    expiration_date:{type:String},
+    cv_code:{type:String}
   },
   {
     timestamps: {

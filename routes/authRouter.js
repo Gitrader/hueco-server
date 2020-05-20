@@ -86,6 +86,8 @@ authRouter.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
         if (passwordCorrect) {
           //  - if password is correct assign the user document to `req.session.currentUser`
           business.password = "****";
+      
+          
           req.session.currentBusiness = business;
           //  - send  json response
           res
@@ -124,5 +126,15 @@ authRouter.get('/me', isLoggedIn, (req, res, next) => {
     .json(currentBusinessSessionData);
 })
 
+// GET    '/auth/myhueco'
+authRouter.get('/myhueco', isLoggedIn, (req, res, next) => {
+  //  - check if the user IS logged in using helper function (check if session exists)
+
+  //  - if yes, send the response with user info (available on req.session.currentUser)
+  const currentBusinessSessionData = req.session.currentBusiness;
+  res
+    .status(200)
+    .json(currentBusinessSessionData);
+})
 
 module.exports = authRouter;
