@@ -6,7 +6,9 @@ const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const User = require("../models/user");
+// const User = require("../models/user");
+const Business=require("../models/business");
+
 
 
 // HELPER FUNCTIONS
@@ -14,12 +16,24 @@ const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middl
 
 // POST   '/auth/signup'
 authRouter.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
-  const { username, password } = req.body;
+  const { 
+    business_name, 
+    email, 
+    password,
+    address,
+    city,
+    zip_code,
+    service,
+    phone_number,
+    image_url,
+    description,
+    coordinates
+   } = req.body;
 
-  User.findOne({ username })
-    .then((user) => {
+  Business.findOne({ email })
+    .then((business) => {
       //  - check if the `username` exists, if it does send a response with an error
-      if (user) {
+      if (business) {
         return next(createError(400));
       }
       else {  //  - if `username` is unique then:
@@ -27,15 +41,27 @@ authRouter.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashPass = bcrypt.hashSync(password, salt);
         //     - create the new user in DB using the `username` and the encrypted password
-        User.create({ username, password: hashPass })
-          .then((newUser) => {
+        Business.create({
+        business_name, 
+        email, 
+        password: hashPass,
+        address,
+        city,
+        zip_code,
+        service,
+        phone_number,
+        image_url,
+        description,
+        coordinates
+        })
+          .then((newBusiness) => {
             //     - save the newly created user in the `session`
-            newUser.password = "****";
-            req.session.currentUser = newUser;
+            newBusiness.password = "****";
+            req.session.currentBusiness = newBusiness;
             //     - send back the response 201 (created) and the new user object
             res
               .status(201) // Created
-              .json(newUser);
+              .json(newBusiness);
 
           })
           .catch((err) => next(createError(err)));
@@ -46,25 +72,25 @@ authRouter.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
 // POST    '/auth/login'
 authRouter.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
 
-  const { username, password } = req.body;
-  User.findOne({ username })
-    .then((user) => {
+  const { email, password } = req.body;
+  Business.findOne({ email })
+    .then((business) => {
       //  - check if user exists in the DB
-      if (!user) {
+      if (!business) {
         //  - if user doesn't exist - forward the error to the error middleware using `next()`
         return next(createError(404)); // Unathorized
       }
       else {
         //  - check if the password is correct
-        const passwordCorrect = bcrypt.compareSync(password, user.password);
+        const passwordCorrect = bcrypt.compareSync(password, business.password);
         if (passwordCorrect) {
           //  - if password is correct assign the user document to `req.session.currentUser`
-          user.password = "****";
-          req.session.currentUser = user;
+          business.password = "****";
+          req.session.currentBusiness = business;
           //  - send  json response
           res
             .status(200)
-            .json(user);
+            .json(business);
         }
       }
     })
@@ -92,10 +118,10 @@ authRouter.get('/me', isLoggedIn, (req, res, next) => {
   //  - check if the user IS logged in using helper function (check if session exists)
 
   //  - if yes, send the response with user info (available on req.session.currentUser)
-  const currentUserSessionData = req.session.currentUser;
+  const currentBusinessSessionData = req.session.currentBusiness;
   res
     .status(200)
-    .json(currentUserSessionData);
+    .json(currentBusinessSessionData);
 })
 
 
