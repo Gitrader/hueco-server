@@ -8,7 +8,7 @@ const bookingSchema = new Schema({
     last_name: {type: String},
     date :{type:Date, default: new (Date)},
     email: {type: String},
-    timeslot:{type:String},
+    timeslot_id:{type: Schema.Types.ObjectId,ref:'Slot'},
     cardholder_name:{type:String},
     card_number:{type:String},
     expiration_date:{type:String},

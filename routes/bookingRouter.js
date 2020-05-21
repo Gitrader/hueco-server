@@ -3,23 +3,24 @@ const bookingRouter = express.Router();
 
 const Business=require("../models/business");
 const Booking=require("../models/booking");
+const Slot=require("../models/slot");
 
 
 
 
 
-// POST   `/booking/contact-info`
+// POST   `/:businessId/:timeslotId/contact-info`
 bookingRouter.post('/contact-info', async (req, res, next) => {
-  const { first_name,last_name,email,businessId,timeslot} = req.body;
+  const { first_name,last_name,email,businessId,timeslotId} = req.body;
 try{
- const newBooking= await Booking.create({ first_name,last_name,email, business_id:businessId,timeslot})
+ const newBooking= await Booking.create({ first_name,last_name,email, business_id:businessId,timeslot_id:timeslotId})
     
 const updatedBusiness= await Business.updateOne({_id:businessId},{$push:{user_booking:newBooking._id}},{new:true})
 
-const updatedBusiness2= await Business.updateOne({_id:businessId},{$set:{"availability.$.isBooked":true}},{new:true}) 
+const updatedSlot= await Slot.update({_id:timeslotId},{$set:{isBooked:true}},{new:true}) 
     res
       .status(200)
-      .json({newBooking,updatedBusiness})
+      .json({newBooking,updatedBusiness,updatedSlot})
 }
   catch(err) {
     res
@@ -29,7 +30,7 @@ const updatedBusiness2= await Business.updateOne({_id:businessId},{$set:{"availa
   })
 
 
-    // POST   `/booking/payment-information`
+    // PUT   `/booking/payment-information`
 bookingRouter.put('/:bookingId/payment-information',  (req, res, next) => {
   const { bookingId } = req.params;
   const { cardholder_name, card_number, expiration_date,  cv_code} = req.body;

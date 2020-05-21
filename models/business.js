@@ -13,12 +13,7 @@ const businessSchema = new Schema({
     service:{type: String, required: true},
     phone_number:{type: String, required: true},
     discount:{type: Number},
-    availability:
-    [{ //business.availability.isBooked
-        timeSlot:String,
-        date:Date, 
-        isBooked:{type:Boolean, default:false}
-    }] ,
+    availability:[{type: Schema.Types.ObjectId,ref:'Slot'}],
     user_booking:[{type: Schema.Types.ObjectId,ref:'Booking'}],
     initial_price:{type: Number},
     discounted_price:{type: Number},
