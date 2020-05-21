@@ -16,8 +16,7 @@ try{
     
 const updatedBusiness= await Business.updateOne({_id:businessId},{$push:{user_booking:newBooking._id}},{new:true})
 
-const updatedBusiness2= await Business.updateOne({_id:businessId},{$set:{"availability.$.isBooked":true}},{new:true})
-    
+const updatedBusiness2= await Business.updateOne({_id:businessId},{$set:{"availability.$.isBooked":true}},{new:true}) 
     res
       .status(200)
       .json({newBooking,updatedBusiness})

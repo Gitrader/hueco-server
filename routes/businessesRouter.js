@@ -45,7 +45,7 @@ businessesRouter.get('/:businessId' , (req, res, next) => {
 
 
 
-// POST   '/businesses/:id/add-hueco'
+// PUT   '/businesses/:id/add-hueco'
 businessesRouter.put('/:businessId/add-hueco', isLoggedIn,  (req, res, next) => {
   const { 
     timeSlot,
@@ -68,12 +68,12 @@ businessesRouter.put('/:businessId/add-hueco', isLoggedIn,  (req, res, next) => 
 
 
     // PUT   'businesses/:id/edit/:myhuecoId'
-businessesRouter.post('/:id/edit/:myHuecoId', isLoggedIn,  (req, res, next) => {
+businessesRouter.put('/:id/edit/:myHuecoId', isLoggedIn,  (req, res, next) => {
   const {businessId,myHuecoId}= req.params
   const { availability } = req.body;
 
   Business.findByIdAndUpdate( businessId, {availability }, myHuecoId, { new: true } )
-    .then(({ updatedTimeSlot})=> {
+    .then((updatedTimeSlot)=> {
       res
       .status(200)
       .json(updatedTimeSlot)
