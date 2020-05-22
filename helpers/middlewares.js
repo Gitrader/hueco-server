@@ -13,6 +13,28 @@ exports.isNotLoggedIn = (req, res, next) => {
 exports.validationLogin = (req, res, next) => {
   const { email, password } = req.body;
 
+  
+
   if (!email || !password) next(createError(400));
+  else next();
+};
+
+
+exports.validationSignUp = (req, res, next) => {
+  const {  business_name, 
+    email, 
+    password,
+    address,
+    city,
+    zip_code,
+    service,
+    phone_number,
+    image_url,
+    description,
+    coordinates } = req.body;
+
+  
+
+  if (!email || !password) next(createError(400)); //ALL REQUIRED!!!!
   else next();
 };

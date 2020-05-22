@@ -12,10 +12,10 @@ const Business=require("../models/business");
 
 
 // HELPER FUNCTIONS
-const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middlewares");
+const { isLoggedIn, isNotLoggedIn, validationLogin, validationSignUp } = require("../helpers/middlewares");
 
 // POST   '/auth/signup'
-authRouter.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
+authRouter.post('/signup', isNotLoggedIn, validationSignUp, (req, res, next) => {
   const { 
     business_name, 
     email, 

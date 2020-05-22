@@ -17,7 +17,7 @@ const businessSchema = new Schema({
     user_booking:[{type: Schema.Types.ObjectId,ref:'Booking'}],
     initial_price:{type: Number},
     discounted_price:{type: Number},
-    image_url: {type: String, required: true},
+    image_url: {type: String},
     description:{type: String},
     coordinates:[{type: Number }] 
   },
