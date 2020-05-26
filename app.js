@@ -71,8 +71,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTER MIDDLEWARE
 app.use('/auth', authRouter);
-app.use('/businesses', businessesRouter);
-app.use('/booking', bookingRouter);
+app.use('/api/businesses', businessesRouter);
+app.use('/api/booking', bookingRouter);
 
 // ROUTE FOR SERVING REACT APP (index.html)
 app.use((req, res) => {
