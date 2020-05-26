@@ -101,7 +101,7 @@ businessesRouter.delete('/:businessId/delete/:myHuecoId',  isLoggedIn,async (req
 
   try {
      await Slot.findOneAndRemove(myHuecoId)
-    const businessUpdatedSlot=await Business.update({_id:businessId},{$pull:{availability:myHuecoId}},{new:true})
+    const businessUpdatedSlot=await Business.findByIdAndUpdate({_id:businessId},{$pull:{availability:myHuecoId}},{new:true})
     res.status(202).json(businessUpdatedSlot)
   } catch (error) {
     res.status(500).json(error);
