@@ -48,14 +48,16 @@ businessesRouter.get('/:businessId' , (req, res, next) => {
 
 // PUT   '/businesses/:id/add-hueco'
 businessesRouter.put('/:businessId/add-hueco', isLoggedIn,  async(req, res, next) => {
+  console.log("REQBODY",req.body)
   const { 
     timeSlot,
-    date
+    
    } = req.body;
+   console.log("TIMESLOT",timeSlot)
    const{businessId}=req.params
 
    try {  const newSlot= await Slot.create({timeSlot, business_id:businessId});
-
+console.log("new slot",newSlot)
    const businessUpdated= await Business.findByIdAndUpdate(businessId, {$push:{availability:newSlot._id}}, {new:true});
    res
    .status(200)
