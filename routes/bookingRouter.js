@@ -11,13 +11,15 @@ const Slot=require("../models/slot");
 
 // POST   `/:businessId/:timeslotId/contact-info`
 bookingRouter.post('/contact-info', async (req, res, next) => {
+
   const { first_name,last_name,email,businessId,timeslotId} = req.body;
+  console.log("timeslotID",timeslotId)
 try{
  const newBooking= await Booking.create({ first_name,last_name,email, business_id:businessId,timeslot_id:timeslotId})
     
-const updatedBusiness= await Business.updateOne({_id:businessId},{$push:{user_booking:newBooking._id}},{new:true})
+const updatedBusiness= await Business.findByIdAndUpdate(businessId,{$push:{user_booking:newBooking._id}},{new:true})
 
-const updatedSlot= await Slot.update({_id:timeslotId},{$set:{isBooked:true}},{new:true}) 
+const updatedSlot= await Slot.findByIdAndUpdate(timeslotId,{$set:{isBooked:true}},{new:true}) 
     res
       .status(200)
       .json({newBooking,updatedBusiness,updatedSlot})
