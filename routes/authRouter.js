@@ -6,7 +6,7 @@ const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-// const User = require("../models/user");
+
 const Business=require("../models/business");
 
 
@@ -32,15 +32,15 @@ authRouter.post('/signup', isNotLoggedIn, validationSignUp, (req, res, next) => 
 
   Business.findOne({ email })
     .then((business) => {
-      //  - check if the `username` exists, if it does send a response with an error
+      //  - check if the `buisiness` exists, if it does send a response with an error
       if (business) {
         return next(createError(400));
       }
-      else {  //  - if `username` is unique then:
+      else {  //  - if `buisiness` is unique then:
         //     - encrypt the password using bcrypt
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashPass = bcrypt.hashSync(password, salt);
-        //     - create the new user in DB using the `username` and the encrypted password
+        //     - create the new business in DB using the `buisiness` and the encrypted password
         Business.create({
         business_name, 
         email, 
@@ -55,10 +55,10 @@ authRouter.post('/signup', isNotLoggedIn, validationSignUp, (req, res, next) => 
         coordinates
         })
           .then((newBusiness) => {
-            //     - save the newly created user in the `session`
+            //     - save the newly created business in the `session`
             newBusiness.password = "****";
             req.session.currentBusiness = newBusiness;
-            //     - send back the response 201 (created) and the new user object
+            //     - send back the response 201 (created) and the new business object
             res
               .status(201) // Created
               .json(newBusiness);
@@ -75,16 +75,16 @@ authRouter.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
   const { email, password } = req.body;
   Business.findOne({ email })
     .then((business) => {
-      //  - check if user exists in the DB
+      //  - check if business exists in the DB
       if (!business) {
-        //  - if user doesn't exist - forward the error to the error middleware using `next()`
+        //  - if business doesn't exist - forward the error to the error middleware using `next()`
         return next(createError(404)); // Unathorized
       }
       else {
         //  - check if the password is correct
         const passwordCorrect = bcrypt.compareSync(password, business.password);
         if (passwordCorrect) {
-          //  - if password is correct assign the user document to `req.session.currentUser`
+          //  - if password is correct assign the business document to `req.session.currentBusiness`
           business.password = "****";
       
           
@@ -101,7 +101,7 @@ authRouter.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
 
 // GET   '/auth/logout'
 authRouter.get('/logout', isLoggedIn, (req, res, next) => {
-  //  - check if the user is logged in using helper function (check if session exists)
+  //  - check if the business is logged in using helper function (check if session exists)
 
   //  - destroy the session
   req.session.destroy(function (err) {
@@ -117,9 +117,9 @@ authRouter.get('/logout', isLoggedIn, (req, res, next) => {
 
 // GET    '/auth/me'
 authRouter.get('/me', isLoggedIn, (req, res, next) => {
-  //  - check if the user IS logged in using helper function (check if session exists)
+  //  - check if the business IS logged in using helper function (check if session exists)
 
-  //  - if yes, send the response with user info (available on req.session.currentUser)
+  //  - if yes, send the response with business info (available on req.session.currentBusiness)
   const currentBusinessSessionData = req.session.currentBusiness;
   res
     .status(200)
@@ -128,9 +128,9 @@ authRouter.get('/me', isLoggedIn, (req, res, next) => {
 
 // GET    '/auth/myhueco'
 authRouter.get('/myhueco', isLoggedIn, (req, res, next) => {
-  //  - check if the user IS logged in using helper function (check if session exists)
+  //  - check if the business IS logged in using helper function (check if session exists)
 
-  //  - if yes, send the response with user info (available on req.session.currentUser)
+  //  - if yes, send the response with business info (available on req.session.currentBusiness)
   const currentBusinessSessionData = req.session.currentBusiness;
   res
     .status(200)
@@ -138,3 +138,4 @@ authRouter.get('/myhueco', isLoggedIn, (req, res, next) => {
 })
 
 module.exports = authRouter;
+
