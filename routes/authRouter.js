@@ -25,9 +25,12 @@ authRouter.post('/signup', isNotLoggedIn, validationSignUp, (req, res, next) => 
     zip_code,
     service,
     phone_number,
-    image_url,
+    // image_url,
     description,
-    coordinates
+    discount,
+    initial_price,
+    discounted_price
+    // coordinates
    } = req.body;
 
   Business.findOne({ email })
@@ -50,9 +53,12 @@ authRouter.post('/signup', isNotLoggedIn, validationSignUp, (req, res, next) => 
         zip_code,
         service,
         phone_number,
-        image_url,
+        // image_url,
         description,
-        coordinates
+        discount,
+    initial_price,
+    discounted_price
+        // coordinates
         })
           .then((newBusiness) => {
             //     - save the newly created business in the `session`
