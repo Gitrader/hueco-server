@@ -34,7 +34,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN,"https://myhueco.herokuapp.com"],
+    origin: [process.env.PUBLIC_DOMAIN,"https://myhueco.herokuapp.com","http://myhueco.herokuapp.com"],
   }),
 );
 // app.use((req, res, next) => {
